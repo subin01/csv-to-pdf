@@ -34,13 +34,13 @@ const Uploader = ({ onComplete, maxFiles = 6 }) => {
         autoUpload={false}
         maxFiles={maxFiles}
         styles={{
-          dropzone: { width: 500, height: maxFiles * 50 },
+          dropzone: { width: 800, height: maxFiles * 50 },
           dropzoneActive: { borderColor: "green" },
         }}
       />
 
       <div>
-        <button onClick={handleClick}>Next</button>
+        <button onClick={handleClick}>Upload</button>
       </div>
     </>
   );

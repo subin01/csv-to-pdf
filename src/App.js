@@ -2,10 +2,14 @@ import "./styles.css";
 
 import React, { useState } from "react";
 import _ from "lodash";
-import Uploader from "./Uploader";
-// import { users_mock, settlements_mock } from "./mock_data";
-import mock_merge_data from "./mock_merge_data";
+// import { users_mock, settlements_mock } from "./mocks/mock_data";
+import mock_merge_data from "./mocks/mock_merge_data";
 import { jsPDF } from "jspdf";
+
+import CustomersView from "./CustomersView";
+import SettlementsView from "./SettlementsView";
+import MergeView from "./MergeView";
+import PdfView from "./PdfView";
 
 function prepareData(usersData, settlementsData) {
   const list = {};
@@ -47,7 +51,7 @@ function preparePDFs(data) {
   doc.text(
     "No. 8, New Friend's Colony,\n11th Main, 8th Cross, ST Bed Layout,\nKoramangala, Bangalore - 560047",
     60,
-    32,
+    32
   );
   doc.setFontSize(22);
   doc.text("Receipt of Donations", 50, 65);
@@ -74,9 +78,47 @@ function preparePDFs(data) {
 }
 
 export default function App() {
+  const [step, setStep] = useState("customers");
   const [users, setUsers] = useState(null);
   const [settlements, setSettlements] = useState(null);
   const [merged, setMerged] = useState(mock_merge_data);
+
+  const renderView = () => {
+    if (step === "customers")
+      return (
+        <>
+          <CustomersView users={users} setUserData={setUserData} />
+          {users && (
+            <button onClick={() => setStep("settlements")}>
+              Next (settlements)
+            </button>
+          )}
+        </>
+      );
+    if (step === "settlements")
+      return (
+        <>
+          <SettlementsView
+            settlements={settlements}
+            setSettlements={setSettlementsData}
+          />
+          {users && settlements && (
+            <button onClick={handlePrepare}>Next (Merge)</button>
+          )}
+        </>
+      );
+    if (step === "merged")
+      return (
+        <>
+          <MergeView merged={merged} />
+          {merged && (
+            <button onClick={() => preparePDFs(merged)}>Generate PDFs</button>
+          )}
+        </>
+      );
+    if (step === "pdf") return <PDfView />;
+    return <>View</>;
+  };
 
   const setUserData = (data) => {
     // console.log("USER DATA:", data);
@@ -90,57 +132,16 @@ export default function App() {
 
   const handlePrepare = () => {
     setMerged(prepareData(users, settlements));
+    setStep("merged");
   };
 
   return (
     <div className="App">
       <h1>CSV to PDF</h1>
-      <button onClick={() => preparePDFs(merged)}>Generate PDFs</button>
-
-      <h3>Customers:</h3>
-      {!users && <Uploader onComplete={setUserData} maxFiles={1} />}
-      <ol>
-        {users &&
-          users.map((u) => (
-            <li>
-              {u.id} - <b>{u.name}</b>
-            </li>
-          ))}
-      </ol>
-      <hr />
-      <h3>Settlements:</h3>
-      {!settlements && <Uploader onComplete={setSettlementsData} />}
-      <ol>
-        {settlements &&
-          settlements.map((s) => (
-            <li>
-              {s.id} - {s.customer}
-            </li>
-          ))}
-      </ol>
-      <hr />
-
-      {users && settlements && <button onClick={handlePrepare}>Prepare</button>}
-      <hr />
-
-      <table border={1}>
-        {merged &&
-          Object.values(merged).map((m, i) => (
-            <tr>
-              <td>{i + 1}</td>
-              <td>
-                <strong>{m.name}</strong>
-              </td>
-              <td>{m.email}</td>
-              {Object.keys(m.payment).map((k) => (
-                <td>
-                  {k}
-                  <b>{m.payment[k]}</b>
-                </td>
-              ))}
-            </tr>
-          ))}
-      </table>
+      <hr></hr>
+      {renderView()}
+      <hr></hr>
+      {/* <button onClick={() => preparePDFs(merged)}>Generate PDFs</button> */}
     </div>
   );
 }
