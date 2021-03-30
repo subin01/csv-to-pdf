@@ -11,7 +11,8 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-dropzone-uploader": "2.11.0",
-    "react-scripts": "4.0.0"
+    "react-scripts": "4.0.0",
+    "to-words": "^2.3.1"
   },
   "devDependencies": {
     "@babel/runtime": "7.13.8",
@@ -21,7 +22,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "yarn build && firebase deploy --only hosting"
   },
   "browserslist": [
     ">0.2%",

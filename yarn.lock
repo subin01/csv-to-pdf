@@ -10558,6 +10558,11 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
+to-words@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/to-words/-/to-words-2.3.1.tgz#0f5141b3df2232cf4b0860219c91a2d6d1f5854f"
+  integrity sha512-1dDxop822EI2e7UbXuE4aKmjMVgTclbQrJ7b73sDsbTgQXrRaFtcMH1FG3ZWF2M8gAa28vqnLa1/R10lqdY3eA==
+
 toidentifier@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
